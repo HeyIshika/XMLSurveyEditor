@@ -63,10 +63,6 @@
             "github-pages": {
               "outputPath": "dist/xmlSurveyEditor/browser",
               "outputMode": "static",
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true,
-              "server": false,
               "budgets": [
                 {
                   "type": "initial",
