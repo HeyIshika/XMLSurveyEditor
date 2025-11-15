@@ -1,0 +1,127 @@
+@use 'sass:color';
+
+.editor-wrapper {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #2b2c34;
+}
+
+textarea {
+  font-family: 'Fira Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  border: 1px solid #d0d3da;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  resize: none;
+  min-height: 24rem;
+  background-color: #fdfdfd;
+  color: #212228;
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
+
+  &:focus {
+    border-color: #3a86ff;
+    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.15);
+  }
+}
+
+.plain-textarea {
+  flex: 1;
+}
+
+.xml-editor {
+  position: relative;
+  flex: 1;
+  border-radius: 0.5rem;
+  border: 1px solid #d0d3da;
+  background-color: #0c1222;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.35);
+}
+
+.xml-highlight {
+  pointer-events: none;
+  margin: 0;
+  padding: 1rem;
+  font-family: 'Fira Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e7ecf7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 24rem;
+  background-color: transparent;
+}
+
+.xml-textarea {
+  position: absolute;
+  inset: 0;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  color: transparent;
+  caret-color: #ffb703;
+  resize: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.xml-tag {
+  color: #8be9fd;
+}
+
+.xml-tag-name {
+  color: #ff79c6;
+}
+
+.xml-attr {
+  color: #f8f8f2;
+}
+
+.xml-attr-value {
+  color: #50fa7b;
+}
+
+.xml-comment {
+  color: #6272a4;
+  font-style: italic;
+}
+
+.xml-text {
+  color: #f1fa8c;
+}
+
+@media (max-width: 960px) {
+  .editor-wrapper {
+    flex-direction: column;
+  }
+
+  textarea,
+  .xml-highlight {
+    min-height: 18rem;
+  }
+}
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>XmlSurveyEditor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Redirect to index.html for Angular routing
+    // The base href will be set correctly by Angular
+    var path = window.location.pathname;
+    var basePath = path.split('/').slice(0, -1).join('/') || '/';
+    if (!basePath.endsWith('/')) basePath += '/';
+    window.location.replace(basePath + 'index.html' + window.location.search + window.location.hash);
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
+

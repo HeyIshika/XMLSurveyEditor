@@ -1,0 +1,40 @@
+<div style="display: flex; gap: 20px; padding: 20px;">
+
+    <!-- Document Editor -->
+    <div style="flex: 1;">
+      <h3>Document (Questions)</h3>
+  
+      <!-- Upload Document -->
+      <input type="file" accept=".txt" (change)="uploadDoc($event)" />
+  
+      <!-- Download Document -->
+      <button (click)="downloadDoc()" style="margin-left:10px;">Download Doc</button>
+  
+      <textarea
+        [(ngModel)]="docText"
+        (input)="updateXML()"
+        rows="20"
+        style="width: 100%; margin-top:10px; font-family: monospace; padding: 10px;"
+      ></textarea>
+    </div>
+  
+    <!-- XML Editor -->
+    <div style="flex: 1;">
+      <h3>XML</h3>
+  
+      <!-- Upload XML -->
+      <input type="file" accept=".xml" (change)="uploadXML($event)" />
+  
+      <!-- Download XML -->
+      <button (click)="downloadXML()" style="margin-left:10px;">Download XML</button>
+  
+      <textarea
+        [(ngModel)]="xmlText"
+        (input)="updateDocument()"
+        rows="20"
+        style="width: 100%; margin-top:10px; font-family: monospace; padding: 10px; background: #fafafa;"
+      ></textarea>
+    </div>
+  
+  </div>
+  
