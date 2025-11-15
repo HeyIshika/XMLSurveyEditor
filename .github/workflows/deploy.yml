@@ -33,7 +33,28 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npx ng build --configuration github-pages --base-href /${{ github.event.repository.name }}/
+        run: |
+          REPO_NAME="${{ github.event.repository.name }}"
+          echo "Building with base-href: /${REPO_NAME}/"
+          npx ng build --configuration github-pages --base-href /${REPO_NAME}/
+
+      - name: Copy supporting files
+        run: |
+          if [ -f public/404.html ]; then
+            cp public/404.html dist/xmlSurveyEditor/browser/404.html
+          fi
+          if [ -f public/.nojekyll ]; then
+            cp public/.nojekyll dist/xmlSurveyEditor/browser/.nojekyll
+          else
+            touch dist/xmlSurveyEditor/browser/.nojekyll
+          fi
+          
+      - name: Verify base href
+        run: |
+          if [ -f dist/xmlSurveyEditor/browser/index.html ]; then
+            echo "Checking index.html base href:"
+            grep -o '<base href="[^"]*"' dist/xmlSurveyEditor/browser/index.html || echo "No base tag found"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
