@@ -38,49 +38,71 @@ jobs:
           echo "Building with base-href: /${REPO_NAME}/"
           echo "Using production configuration with static output..."
           # Build with production config, output to browser directory, set static mode
-          npx ng build --configuration production --base-href /${REPO_NAME}/ --output-path dist/xmlSurveyEditor/browser --output-mode static
+          npx ng build --configuration production --base-href /${REPO_NAME}/ --output-path dist/xmlSurveyEditor --output-mode static
+
+      - name: Find and move build files
+        run: |
+          echo "Checking build output structure..."
+          echo "Contents of dist/xmlSurveyEditor:"
+          ls -la dist/xmlSurveyEditor/ || echo "Directory not found"
+          echo ""
+          # Find where index.html actually is
+          if [ -f dist/xmlSurveyEditor/browser/index.html ]; then
+            echo "Found index.html in dist/xmlSurveyEditor/browser/"
+            BUILD_DIR="dist/xmlSurveyEditor/browser"
+          elif [ -f dist/xmlSurveyEditor/index.html ]; then
+            echo "Found index.html in dist/xmlSurveyEditor/"
+            BUILD_DIR="dist/xmlSurveyEditor"
+          else
+            echo "Searching for index.html..."
+            find dist -name "index.html" -type f | head -5
+            BUILD_DIR=$(find dist -name "index.html" -type f | head -1 | xargs dirname)
+            echo "Using build directory: ${BUILD_DIR}"
+          fi
+          echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
 
       - name: Copy supporting files
         run: |
-          # Copy index.html to 404.html so GitHub Pages serves the Angular app for 404s
-          if [ -f dist/xmlSurveyEditor/browser/index.html ]; then
-            cp dist/xmlSurveyEditor/browser/index.html dist/xmlSurveyEditor/browser/404.html
+          if [ -f "$BUILD_DIR/index.html" ]; then
+            # Copy index.html to 404.html so GitHub Pages serves the Angular app for 404s
+            cp "$BUILD_DIR/index.html" "$BUILD_DIR/404.html"
             echo "Copied index.html to 404.html"
           fi
           # Ensure .nojekyll exists
           if [ -f public/.nojekyll ]; then
-            cp public/.nojekyll dist/xmlSurveyEditor/browser/.nojekyll
+            cp public/.nojekyll "$BUILD_DIR/.nojekyll"
           else
-            touch dist/xmlSurveyEditor/browser/.nojekyll
+            touch "$BUILD_DIR/.nojekyll"
           fi
           
       - name: Verify build output
         run: |
           echo "=== Build Output Verification ==="
           echo "Repository name: ${{ github.event.repository.name }}"
+          echo "Build directory: $BUILD_DIR"
           echo ""
           echo "Listing build output directory:"
-          ls -la dist/xmlSurveyEditor/browser/ || echo "Directory not found"
+          ls -la "$BUILD_DIR/" || echo "Directory not found"
           echo ""
           echo "Checking for key files:"
-          [ -f dist/xmlSurveyEditor/browser/index.html ] && echo "✓ index.html exists" || echo "✗ index.html MISSING"
-          [ -f dist/xmlSurveyEditor/browser/404.html ] && echo "✓ 404.html exists" || echo "✗ 404.html MISSING"
-          [ -f dist/xmlSurveyEditor/browser/.nojekyll ] && echo "✓ .nojekyll exists" || echo "✗ .nojekyll MISSING"
+          [ -f "$BUILD_DIR/index.html" ] && echo "✓ index.html exists" || echo "✗ index.html MISSING"
+          [ -f "$BUILD_DIR/404.html" ] && echo "✓ 404.html exists" || echo "✗ 404.html MISSING"
+          [ -f "$BUILD_DIR/.nojekyll" ] && echo "✓ .nojekyll exists" || echo "✗ .nojekyll MISSING"
           echo ""
           echo "Checking index.html base href:"
-          if [ -f dist/xmlSurveyEditor/browser/index.html ]; then
-            BASE_HREF=$(grep -o '<base href="[^"]*"' dist/xmlSurveyEditor/browser/index.html | head -1)
+          if [ -f "$BUILD_DIR/index.html" ]; then
+            BASE_HREF=$(grep -o '<base href="[^"]*"' "$BUILD_DIR/index.html" | head -1)
             echo "Base href found: ${BASE_HREF}"
             if [[ ! "$BASE_HREF" == *"XMLSurveyEditor"* ]]; then
               echo "⚠️  WARNING: Base href doesn't contain XMLSurveyEditor!"
             fi
             echo ""
             echo "First 15 lines of index.html:"
-            head -n 15 dist/xmlSurveyEditor/browser/index.html
+            head -n 15 "$BUILD_DIR/index.html"
             echo ""
             echo "Checking 404.html (should match index.html):"
-            if [ -f dist/xmlSurveyEditor/browser/404.html ]; then
-              diff -q dist/xmlSurveyEditor/browser/index.html dist/xmlSurveyEditor/browser/404.html && echo "✓ 404.html matches index.html" || echo "⚠️  404.html differs from index.html"
+            if [ -f "$BUILD_DIR/404.html" ]; then
+              diff -q "$BUILD_DIR/index.html" "$BUILD_DIR/404.html" && echo "✓ 404.html matches index.html" || echo "⚠️  404.html differs from index.html"
             fi
           else
             echo "ERROR: index.html not found!"
@@ -88,7 +110,7 @@ jobs:
           fi
           echo ""
           echo "JavaScript files in build:"
-          ls -1 dist/xmlSurveyEditor/browser/*.js 2>/dev/null | head -5 || echo "No JS files found"
+          ls -1 "$BUILD_DIR"/*.js 2>/dev/null | head -5 || echo "No JS files found"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -96,7 +118,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/xmlSurveyEditor/browser
+          path: ${{ env.BUILD_DIR }}
           
       - name: Verify artifact contents
         run: |
