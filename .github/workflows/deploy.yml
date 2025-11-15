@@ -36,7 +36,9 @@ jobs:
         run: |
           REPO_NAME="${{ github.event.repository.name }}"
           echo "Building with base-href: /${REPO_NAME}/"
-          npx ng build --configuration github-pages --base-href /${REPO_NAME}/
+          echo "Using production configuration with static output..."
+          # Build with production config, output to browser directory, set static mode
+          npx ng build --configuration production --base-href /${REPO_NAME}/ --output-path dist/xmlSurveyEditor/browser --output-mode static
 
       - name: Copy supporting files
         run: |
