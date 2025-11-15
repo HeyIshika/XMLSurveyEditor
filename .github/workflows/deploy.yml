@@ -40,9 +40,12 @@ jobs:
 
       - name: Copy supporting files
         run: |
-          if [ -f public/404.html ]; then
-            cp public/404.html dist/xmlSurveyEditor/browser/404.html
+          # Copy index.html to 404.html so GitHub Pages serves the Angular app for 404s
+          if [ -f dist/xmlSurveyEditor/browser/index.html ]; then
+            cp dist/xmlSurveyEditor/browser/index.html dist/xmlSurveyEditor/browser/404.html
+            echo "Copied index.html to 404.html"
           fi
+          # Ensure .nojekyll exists
           if [ -f public/.nojekyll ]; then
             cp public/.nojekyll dist/xmlSurveyEditor/browser/.nojekyll
           else
