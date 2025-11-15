@@ -49,11 +49,19 @@ jobs:
             touch dist/xmlSurveyEditor/browser/.nojekyll
           fi
           
-      - name: Verify base href
+      - name: Verify build output
         run: |
+          echo "Listing build output directory:"
+          ls -la dist/xmlSurveyEditor/browser/ || echo "Directory not found"
+          echo ""
+          echo "Checking index.html base href:"
           if [ -f dist/xmlSurveyEditor/browser/index.html ]; then
-            echo "Checking index.html base href:"
             grep -o '<base href="[^"]*"' dist/xmlSurveyEditor/browser/index.html || echo "No base tag found"
+            echo ""
+            echo "First few lines of index.html:"
+            head -n 10 dist/xmlSurveyEditor/browser/index.html
+          else
+            echo "ERROR: index.html not found!"
           fi
 
       - name: Setup Pages

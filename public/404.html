@@ -5,22 +5,15 @@
   <title>XmlSurveyEditor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
-    // Single Page Apps for GitHub Pages
-    // https://github.com/rafgraph/spa-github-pages
-    (function() {
-      var pathSegmentsToKeep = 1;
-      var l = window.location;
-      var repoName = l.pathname.split('/')[1] || '';
-      var basePath = '/' + repoName + '/';
-      
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        basePath + '?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    })();
+    // Redirect to index.html - simple one-time redirect
+    var path = window.location.pathname;
+    var repoName = path.split('/').filter(Boolean)[0] || '';
+    var basePath = '/' + repoName + '/';
+    
+    // Only redirect once, avoid loops
+    if (path !== basePath + 'index.html') {
+      window.location.replace(basePath + 'index.html' + window.location.search + window.location.hash);
+    }
   </script>
 </head>
 <body>
