@@ -37,7 +37,18 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "mammoth",
+              "@xmldom/xmldom",
+              "lop",
+              "bluebird",
+              "base64-js",
+              "jszip",
+              "dingbat-to-unicode",
+              "path-is-absolute",
+              "xmlbuilder"
+            ]
           },
           "configurations": {
             "production": {

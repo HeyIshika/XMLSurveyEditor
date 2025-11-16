@@ -1,127 +1,66 @@
-@use 'sass:color';
-
-.editor-wrapper {
+.editor-container {
   display: flex;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-}
+  gap: 20px;
+  padding: 16px;
 
-.pane {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+  .panel {
+    flex: 1;
 
-.pane-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #2b2c34;
-}
+    h3 {
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 18px;
+    }
 
-textarea {
-  font-family: 'Fira Code', 'Source Code Pro', Menlo, Consolas, monospace;
-  font-size: 0.95rem;
-  line-height: 1.45;
-  border: 1px solid #d0d3da;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  resize: none;
-  min-height: 24rem;
-  background-color: #fdfdfd;
-  color: #212228;
-  outline: none;
-  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
+    .file-row {
+      margin-bottom: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
 
-  &:focus {
-    border-color: #3a86ff;
-    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.15);
-  }
-}
+      input[type="file"] {
+        cursor: pointer;
+      }
 
-.plain-textarea {
-  flex: 1;
-}
+      button {
+        padding: 6px 14px;
+        border: none;
+        background: #4a90e2;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
 
-.xml-editor {
-  position: relative;
-  flex: 1;
-  border-radius: 0.5rem;
-  border: 1px solid #d0d3da;
-  background-color: #0c1222;
-  overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.35);
-}
+        &:hover {
+          background: #3a78c0;
+        }
 
-.xml-highlight {
-  pointer-events: none;
-  margin: 0;
-  padding: 1rem;
-  font-family: 'Fira Code', 'Source Code Pro', Menlo, Consolas, monospace;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #e7ecf7;
-  white-space: pre-wrap;
-  word-break: break-word;
-  min-height: 24rem;
-  background-color: transparent;
-}
+        &:active {
+          transform: scale(0.97);
+        }
+      }
+    }
 
-.xml-textarea {
-  position: absolute;
-  inset: 0;
-  padding: 1rem;
-  border: none;
-  background: transparent;
-  color: transparent;
-  caret-color: #ffb703;
-  resize: none;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  white-space: pre;
+    textarea {
+      width: 100%;
+      font-family: monospace;
+      padding: 10px;
+      resize: vertical;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      min-height: 400px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-  &:focus {
-    outline: none;
-  }
-}
-
-.xml-tag {
-  color: #8be9fd;
-}
-
-.xml-tag-name {
-  color: #ff79c6;
-}
-
-.xml-attr {
-  color: #f8f8f2;
-}
-
-.xml-attr-value {
-  color: #50fa7b;
-}
-
-.xml-comment {
-  color: #6272a4;
-  font-style: italic;
-}
-
-.xml-text {
-  color: #f1fa8c;
-}
-
-@media (max-width: 960px) {
-  .editor-wrapper {
-    flex-direction: column;
+      &:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+      }
+    }
   }
 
-  textarea,
-  .xml-highlight {
-    min-height: 18rem;
+  .xml-panel textarea {
+    background: #fafafa;
   }
 }
-
