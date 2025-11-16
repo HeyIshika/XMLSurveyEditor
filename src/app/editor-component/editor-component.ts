@@ -3,6 +3,16 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+let mammothLib: any;
+
+async function getMammoth() {
+  if (!mammothLib) {
+    const module = await import('mammoth');
+    mammothLib = module.default || module; // <— FIX for GitHub Pages
+  }
+  return mammothLib;
+}
+
 @Component({
   selector: 'editor-component',
   templateUrl: './editor-component.html',
@@ -21,7 +31,7 @@ export class EditorComponent {
     if (!file) return;
 
     // Dynamically import mammoth to reduce initial bundle size
-    const mammoth = await import('mammoth');
+    const mammoth = await getMammoth();
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
     this.docText = result.value.trim();
